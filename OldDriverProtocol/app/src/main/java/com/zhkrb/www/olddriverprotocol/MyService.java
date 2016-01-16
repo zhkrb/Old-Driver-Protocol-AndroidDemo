@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -27,19 +28,16 @@ import java.util.regex.Pattern;
 public class MyService extends Service {
 
     private String data = null;
-    private String copydata;
     private WindowManager wm;
     private WindowManager.LayoutParams params;
     private View view;
-    private String copyValue;
-    private String enstr;
-    private String Uncodestr;
     private float x;
     private float y;
     private float startX = 0;
     private float startY = 0;
 
-    // private String copyValue;
+    private boolean flotWdState = false;
+    private String CPdata = null;
 
     public MyService() {
     }
@@ -48,7 +46,7 @@ public class MyService extends Service {
 
 
     public void testCliboardApi() {
-        final Intent intent = new Intent(this,TestActivity.class);
+
 
 
         final ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
@@ -59,55 +57,29 @@ public class MyService extends Service {
                 Item item = data.getItemAt(0);
 
                 if (item.getText()!= null) {
-                    copydata = item.getText().toString();
-//
-////                    UncodeB64(copydata);
-////                    System.out.println(Uncodestr);
-////                    Toast.makeText(getApplicationContext(), copydata, Toast.LENGTH_SHORT).show();
-//                    //System.out.println(item.getText().toString());
-//                    Pattern pattern = Pattern.compile("odp://[\\w\\W]+/");
-//                    Matcher matcher = pattern.matcher(copydata);
-//                    if (matcher.find()) {
-//                        //copyValue = Uncodestr;
-//                        copyValue = matcher.group(0);
-//                        copyValue = copyValue.substring(6, copyValue.length() - 1);
-//                        System.out.println(copyValue);
-//
-//
-//                        copyValue = UncodeB64(copyValue);
-//                        if (copyValue.indexOf("local@") != -1){
-//                            copyValue = copyValue.substring(6);
-//                            Toast.makeText(getApplicationContext(),"请复制密码",Toast.LENGTH_SHORT).show();
-////                            createFloatView();
-////                            setupCellView(view);
-//                        }else if (copyValue.indexOf("remote@") != -1){
-//                            Toast.makeText(getApplicationContext(),"Classic模式暂不支持",Toast.LENGTH_SHORT).show();
-//                        }else {
-//                            Toast.makeText(getApplicationContext(),"不是正确的ODP消息体",Toast.LENGTH_SHORT).show();
-//                        }
-//
-//
-//                    } else {
-//                        System.out.println("some errror");
-//                    }
-
+                    String copydata = item.getText().toString();
 
 
                     Pattern pattern = Pattern.compile("odp://[\\w\\W]+/");
                     Matcher matcher = pattern.matcher(copydata);
                     if (matcher.find()) {
-                        intent.putExtra("data1",matcher.group(0));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+                        CPdata = matcher.group(0);
+                        if (!flotWdState){
+                            createFloatView();
+
+                            flotWdState = true;
+                        }else {
+                            wm.removeView(view);
+
+                            createFloatView();
+                        }
                     }
                 }
             }
         });
     }
 
-    public void getPW (){
 
-    }
 
 
 
@@ -167,7 +139,7 @@ public class MyService extends Service {
 
         params.format = PixelFormat.RGBA_8888; // 设置图片格式，效果为背景透明
 
-        params.width = 500;
+        params.width = 550;
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
         params.gravity = Gravity.LEFT | Gravity.TOP;
@@ -209,39 +181,39 @@ public class MyService extends Service {
 
         wm.addView(view, params);
 
-
+        setupCellView(view);
+        flotWdState = true;
 
     }
 
 
     private void setupCellView(View rootview){
         ImageButton imagebutton = (ImageButton) rootview.findViewById(R.id.imageButton);
-        EditText edittext = (EditText) rootview.findViewById(R.id.editText2);
+        TextView tv = (TextView) rootview.findViewById(R.id.textView);
+        final Intent intent = new Intent(this,TestActivity.class);
 
-        edittext.setText(copyValue);
         imagebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 wm.removeView(view);
 
-                System.out.println("is working");
+                flotWdState = false;
+            }
+
+        });
+
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wm.removeView(view);
+
+                flotWdState = false;
+                intent.putExtra("data1",CPdata);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
     }
-
-
-    private String UncodeB64(String s){
-        Uncodestr = new String(Base64.decode(s.getBytes(), Base64.DEFAULT));
-
-        return Uncodestr;
-    }
-
-    private void EncodeB64(String s){
-        enstr = Base64.encodeToString(s.getBytes(), Base64.DEFAULT);
-
-
-    }
-
 
 
 

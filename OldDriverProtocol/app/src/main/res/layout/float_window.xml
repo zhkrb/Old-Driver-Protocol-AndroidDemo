@@ -10,24 +10,36 @@
     >
 
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+    </LinearLayout>
+
     <ImageButton
-        android:layout_width="36dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/imageButton"
         android:src="@drawable/ic_close"
 
 
         android:adjustViewBounds="false"
-        android:layout_gravity="right"
         android:background="#00ffffff"
-        android:gravity="center"
+        android:gravity="right"
         android:elevation="1dip"
-        android:focusable="false" />
+        android:focusable="false"
+        android:layout_gravity="right" />
 
-    <EditText
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText2"
-        android:textColor="#000000" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="这是一个ODP消息体"
+        android:id="@+id/textView"
+        android:textColor="#5C3317"
+        android:textSize="18dp"
+        android:clickable="true"/>
 
 </LinearLayout>
