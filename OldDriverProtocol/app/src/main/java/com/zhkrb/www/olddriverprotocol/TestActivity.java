@@ -79,6 +79,7 @@ public class TestActivity extends AppCompatActivity {
                         }
                         AESResult = s;
 
+                        /*判断内容*/
                         if (AESResult != null){
                             if (AESResult.indexOf("local@") != -1) {
                             AESResult = AESResult.substring(6);
@@ -117,14 +118,15 @@ public class TestActivity extends AppCompatActivity {
                 byte[] aesKey;
 
                 try {
+                    /*处理AES密钥*/
                     aesKey = AESCrypt.initKey(AESkey);
-
+                    /* 第一层BASE64处理*/
                     String handle = encode(content.getBytes("UTF-8"));
-
+                    /*本地模式*/
                     handle = "local@"+handle;
-
+                    /*AES加密*/
                     byte[] aesResult = AESCrypt.encrypt(handle.getBytes(),aesKey);
-
+                    /*拼接ODP头*/
                     String Result = "odp://"+encode(aesResult)+"/";
 
                     ed3.setText(Result);
