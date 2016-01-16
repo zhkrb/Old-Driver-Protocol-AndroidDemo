@@ -22,6 +22,6 @@
 ******
 获取编译好的APK文件，请移步[Release](https://github.com/zhkrb/Old-Driver-Protocol-AndroidDemo/releases)  
   
-若想了解实现过程，可直接查看[TestActivity]()
+若想了解实现过程，可直接查看[TestActivity](https://github.com/zhkrb/Old-Driver-Protocol-AndroidDemo/blob/master/OldDriverProtocol/app/src/main/java/com/zhkrb/www/olddriverprotocol/TestActivity.java)
 
 
