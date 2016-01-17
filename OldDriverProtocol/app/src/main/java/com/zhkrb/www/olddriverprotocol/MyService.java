@@ -100,7 +100,6 @@ public class MyService extends Service {
             System.out.println("onStart_data:error");;
         }
 
-        //System.out.println(data);
         return super.onStartCommand(intent, flags, startId);
     }
 

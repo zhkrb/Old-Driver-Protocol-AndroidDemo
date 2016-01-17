@@ -50,7 +50,12 @@ public class TestActivity extends AppCompatActivity {
                 data = ed1.getText().toString();
                 if (data != null) {
                     /*截取ODP头*/
+                    try {
                     data = data.substring(6, data.length() - 1);
+                    } catch (Exception e){
+
+                        Toast.makeText(getApplication(),"清输入正确的ODP消息体",Toast.LENGTH_SHORT).show();
+                    }
 
 
                     /*B64解码*/
